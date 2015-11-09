@@ -14,17 +14,20 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    static final int DEFAULT = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ListView listView = (ListView)findViewById(R.id.listView);
+
         final String s3Link="http://www.gsmarena.com/samsung_i9300_galaxy_s_iii-4238.php";
         final String lumiaLink = "http://www.gsmarena.com/nokia_lumia_920-4967.php";
         final String xperiaLink = "http://www.gsmarena.com/sony_xperia_z5-7534.php";
 
         String[] names = new String[] {"Samsung S3","Lumia 920","Xperia Z5"};
-        ListView listView = (ListView)findViewById(R.id.listView);
+
 
         ChartItems s3 = new ChartItems(R.drawable.s3,"Samsung S3","$350");
         ChartItems Lumia920 = new ChartItems(R.drawable.lumia920,"Lumia 920","$500");
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         chartItemses.add(Lumia920);
         chartItemses.add(Z5);
 
-        CustomAdapter customAdapter = new CustomAdapter(this,chartItemses);
+        final CustomAdapter customAdapter = new CustomAdapter(this,chartItemses);
         listView.setAdapter(customAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 ChartItems chartItems = chartItemses.get(i);
                 String name = chartItems.itemName;
 
+                customAdapter.notifyDataSetChanged();
 
                 Uri webPage=null;
                 if(i==0){
@@ -62,7 +66,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+
     }
+
+    public void addItem(View view){
+        Intent intent=new Intent(MainActivity.this,Main2Activity.class);
+        startActivityForResult(intent, DEFAULT);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
